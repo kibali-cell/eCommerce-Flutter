@@ -1,37 +1,31 @@
 class TPricingCalculator {
+  /// Total Price including shipping and tax
   static double calculateTotalPrice(double subTotal, String location) {
-    //  double taxRate = getTaxRateForLocation(location);
-    // double taxAmount = subTotal;
-
-    // double shippingCost = getShippingCost(location);
-
-    // double totalPrice = subTotal * taxAmount * shippingCost;
-    double totalPrice = subTotal;
+    final shippingCost = getShippingCost(location);
+    final taxAmount = calculateTax(subTotal, location);
+    final totalPrice = subTotal + shippingCost + taxAmount;
     return totalPrice;
   }
 
-//calculate shipping cost
-  static String calculateShippingCost(double subTotal, String location) {
-    double shippingCost = getShippingCost(location);
-    return shippingCost.toStringAsFixed(2);
+  /// Calculate shipping cost
+  static double calculateShippingCost(double subTotal, String location) {
+    return getShippingCost(location);
   }
 
-  ///--Calculate tax
-  static String calculateTax(double subTotal, String location) {
-    double taxRate = getTaxRateForLocation(location);
-    double taxAmount = subTotal * taxRate;
-    return taxAmount.toStringAsFixed(2);
+  /// Calculate tax amount
+  static double calculateTax(double subTotal, String location) {
+    final taxRate = getTaxRateForLocation(location);
+    final taxAmount = subTotal * taxRate;
+    return taxAmount;
   }
 
+  /// Lookup tax rate for location
   static double getTaxRateForLocation(String location) {
-// Lookup the tax rate for the given location free a tax rate database or API.
-// Return the appropriate tax rate.
-    return 0.10; // Example tax rate of 10%
+    return 0.10; // Example: 10% tax
   }
 
+  /// Lookup shipping cost for location
   static double getShippingCost(String location) {
-// Lukup the shipping cost for the given location using a shipping rate AFI.
-// Calculate the shipping cost based on various factors Like distance, weight, etc.
-    return 5.00; // Example shipping cost of $5
+    return 5.00; // Example: flat $5 shipping
   }
 }

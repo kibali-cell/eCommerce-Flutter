@@ -9,6 +9,7 @@ import 'package:shopping/features/shop/screens/product_details/widget/product_de
 import 'package:shopping/features/shop/screens/product_details/widget/product_meta_data.dart';
 import 'package:shopping/features/shop/screens/product_details/widget/rating_share_widget.dart';
 import 'package:shopping/features/shop/screens/product_reviews/product_reviews.dart';
+import 'package:shopping/features/shop/screens/checkout/checkout.dart';
 import 'package:shopping/utils/constants/enums.dart';
 
 import 'package:shopping/utils/constants/sizes.dart';
@@ -51,12 +52,6 @@ class ProductDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: TSizes.spaceBtwSections,
                     ),
-
-                  //checkout Btn
-                  SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () {}, child: const Text('Checkout'))),
 
                   //description
                   const TSectionHeading(

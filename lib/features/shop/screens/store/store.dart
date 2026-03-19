@@ -75,7 +75,7 @@ class StoreScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
-//brand grid
+      //brand grid
                       Obx(() {
                         // if (brandController.isLoading.value) {
                         //   return const TBrandsShimmer();

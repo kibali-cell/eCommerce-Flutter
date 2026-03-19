@@ -27,7 +27,13 @@ class FavoriteScreen extends StatelessWidget {
         ),
         actions: [
           TCircularIcon(
-              icon: Iconsax.add, onPressed: () => Get.to(() => const NavigationMenu()),),
+              icon: Iconsax.add, 
+              onPressed: () {
+                final navController = Get.find<NavigationController>();
+                navController.selectedIndex.value = 1;     // 1 = StoreScreen
+                Get.back();                                 // close FavoriteScreen
+              },
+              ),
         ],
       ),
       body: SingleChildScrollView(
@@ -45,7 +51,11 @@ class FavoriteScreen extends StatelessWidget {
                       animation: TImages.loaderAnimation,
                       showAction: true,
                       actionText: 'Let\'s add some',
-                      onActionPressed: () => Get.off(() => const NavigationMenu()),
+                      onActionPressed: () {
+                      final navController = Get.find<NavigationController>();
+                      navController.selectedIndex.value = 1;     // 1 = Store
+                      Get.back();                                 // or just return to root nav
+                    },
                     );
 
                     const loader = TVerticalProductShimmer(itemCount: 6);

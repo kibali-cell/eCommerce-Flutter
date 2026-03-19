@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:shopping/common/widgets/loaders/loaders.dart';
@@ -11,35 +10,43 @@ import 'package:shopping/utils/constants/text_strings.dart';
 class VerifyEmailController extends GetxController {
   static VerifyEmailController get instance => Get.find();
 
-//send verify email
+  Timer? _timer;
+
   @override
   void onInit() {
-    // TODO: implement onInit
+    super.onInit();
     sendEmailVerification();
     setTimerForAutoRedirect();
-    super.onInit();
   }
 
-  //send link
-  sendEmailVerification() async {
+  // Send verification email
+  Future<void> sendEmailVerification() async {
     try {
       await AuthenticationRepository.instance.sendEmailVerification();
-      TLoaders.errorSnackBar(
-          title: 'Email Sent',
-          message: 'Please Check your inbox and verify your email');
+
+      TLoaders.successSnackBar(
+        title: 'Email Sent',
+        message: 'Please check your inbox and verify your email.',
+      );
     } catch (e) {
-      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
+      TLoaders.errorSnackBar(
+        title: 'Oh Snap',
+        message: e.toString(),
+      );
     }
   }
 
-  setTimerForAutoRedirect() {
-    Timer.periodic(
-      const Duration(seconds: 1),
+  // Auto-check every 3 seconds
+  void setTimerForAutoRedirect() {
+    _timer = Timer.periodic(
+      const Duration(seconds: 3),
       (timer) async {
         await FirebaseAuth.instance.currentUser?.reload();
         final user = FirebaseAuth.instance.currentUser;
-        if (user?.emailVerified ?? false) {
+
+        if (user != null && user.emailVerified) {
           timer.cancel();
+
           Get.off(
             () => SuccessScreen(
               image: TImages.successfullyRegisterAnimation,
@@ -54,18 +61,39 @@ class VerifyEmailController extends GetxController {
     );
   }
 
-  //manually check if email is verified
-  checkEmailVerificationStatus() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null && currentUser.emailVerified) {
-      Get.off(
-        () => SuccessScreen(
-          image: TImages.successfullyRegisterAnimation,
-          title: TTexts.yourAccountCreatedTitle,
-          subTitle: TTexts.yourAccountCreatedSubTitle,
-          onPressed: () => AuthenticationRepository.instance.screenRedirect(),
-        ),
+  // Manual check when user presses Continue
+  Future<void> checkEmailVerificationStatus() async {
+    try {
+      await FirebaseAuth.instance.currentUser?.reload();
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null && user.emailVerified) {
+        Get.off(
+          () => SuccessScreen(
+            image: TImages.successfullyRegisterAnimation,
+            title: TTexts.yourAccountCreatedTitle,
+            subTitle: TTexts.yourAccountCreatedSubTitle,
+            onPressed: () =>
+                AuthenticationRepository.instance.screenRedirect(),
+          ),
+        );
+      } else {
+        TLoaders.errorSnackBar(
+          title: "Not Verified",
+          message: "Please verify your email first.",
+        );
+      }
+    } catch (e) {
+      TLoaders.errorSnackBar(
+        title: "Error",
+        message: e.toString(),
       );
     }
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 }

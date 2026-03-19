@@ -7,6 +7,7 @@ import 'package:shopping/utils/helpers/helper_functions.dart';
 class OrderModel {
   final String id;
   final String userId;
+  final String userEmail;
   final OrderStatus status;
   final double totalAmount;
   final DateTime orderDate;
@@ -18,6 +19,7 @@ class OrderModel {
   OrderModel({
     required this.id,
     this.userId = '',
+    this.userEmail = '',
     required this.status,
     required this.items,
     required this.totalAmount,
@@ -42,6 +44,7 @@ class OrderModel {
     return {
       'id': id,
       'userId': userId,
+      'userEmail' : userEmail,
       'status': status.toString(),
       'totalAmount': totalAmount,
       'orderDate': orderDate,
@@ -58,6 +61,7 @@ class OrderModel {
     return OrderModel(
       id: data['id'] as String,
       userId: data['userId'] as String,
+      userEmail: data['userEmail'] ?? '',
       status:
           OrderStatus.values.firstWhere((e) => e.toString() == data['status']),
       totalAmount: data['totalAmount'] as double,

@@ -67,11 +67,10 @@ class VariationController extends GetxController {
     return availableVariationAttributeValues;
   }
 
-  String getVariationPrice() {
-    return (selectedVariation.value.salePrice > 0
-            ? selectedVariation.value.salePrice
-            : selectedVariation.value.price)
-        .toString();
+  double getVariationPrice() {
+    return selectedVariation.value.salePrice > 0
+        ? selectedVariation.value.salePrice
+        : selectedVariation.value.price;
   }
 
   /// Check Product Variation Stock Status

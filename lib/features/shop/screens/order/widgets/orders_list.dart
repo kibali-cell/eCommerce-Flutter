@@ -4,6 +4,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:shopping/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:shopping/common/widgets/loaders/animation_loader.dart';
 import 'package:shopping/features/shop/controllers/product/order_controller.dart';
+import 'package:shopping/features/shop/screens/order/order_details.dart';
+
 import 'package:shopping/navigation_menu.dart';
 import 'package:shopping/utils/constants/colors.dart';
 import 'package:shopping/utils/constants/image_strings.dart';
@@ -84,7 +86,7 @@ class TOrderListItems extends StatelessWidget {
 
                           //icon
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () => Get.to(() => OrderDetailScreen(order: order)),
                             icon: const Icon(Iconsax.arrow_right_34,
                                 size: TSizes.iconSm),
                           ),

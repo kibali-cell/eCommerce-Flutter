@@ -7,6 +7,8 @@ import 'package:shopping/common/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:shopping/common/widgets/list_tiles/user_profile_tile.dart';
 import 'package:shopping/common/widgets/texts/section_heading.dart';
 import 'package:shopping/data/repositories/authentication/authentication_repository.dart';
+import 'package:shopping/data/repositories/categories/category_repository.dart';
+import 'package:shopping/dummy_data.dart';
 import 'package:shopping/features/personalization/screens/address/address.dart';
 import 'package:shopping/features/personalization/screens/profile/profile.dart';
 import 'package:shopping/features/shop/screens/cart/cart.dart';
@@ -111,10 +113,15 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(
                     height: TSizes.spaceBtwItems,
                   ),
-                  const TSettingsMenuTile(
+                  TSettingsMenuTile(
                       icon: Iconsax.document_upload,
                       title: 'Load Data',
-                      subTitle: 'Upload Data to your Cloud Firebase'),
+                      subTitle: 'Upload Data to your Cloud Firebase',
+                      onTap: () async {
+                        final repo = Get.put(CategoryRepository());
+                        await repo.uploadDummyData(TDummyData.categories);
+                        Get.snackbar("Success", "Categories Uploaded Successfully");
+                      },),
                   TSettingsMenuTile(
                     icon: Iconsax.location,
                     title: 'Geolocation',

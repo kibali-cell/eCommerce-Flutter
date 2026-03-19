@@ -9,17 +9,25 @@ class NetworkManager extends GetxController {
   static NetworkManager get instance => Get.find();
 
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  // FIX: connectivity_plus v5+ emits List<ConnectivityResult>, not a single ConnectivityResult.
+  // Updated StreamSubscription type accordingly.
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   final Rx<ConnectivityResult> _connectionStatus = ConnectivityResult.none.obs;
 
   @override
   void onInit() {
     super.onInit();
+    // FIX: _updateConnectionStatus now accepts List<ConnectivityResult> to match
+    // the new stream type from connectivity_plus v5+.
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+  // FIX: Parameter changed from ConnectivityResult to List<ConnectivityResult>.
+  // We take the first result from the list (or default to none if the list is empty).
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> results) async {
+    final result =
+        results.isNotEmpty ? results.first : ConnectivityResult.none;
     _connectionStatus.value = result;
     if (_connectionStatus.value == ConnectivityResult.none) {
       TLoaders.warningSnackBar(title: 'No Internet Connection');
@@ -28,8 +36,10 @@ class NetworkManager extends GetxController {
 
   Future<bool> isConnected() async {
     try {
-      final result = await _connectivity.checkConnectivity();
-      if (result == ConnectivityResult.none) {
+      // FIX: checkConnectivity() also returns List<ConnectivityResult> in v5+.
+      // We check if the list contains none, or if it's empty.
+      final results = await _connectivity.checkConnectivity();
+      if (results.isEmpty || results.contains(ConnectivityResult.none) && results.length == 1) {
         return false;
       } else {
         return true;

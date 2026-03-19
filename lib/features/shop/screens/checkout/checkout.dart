@@ -5,6 +5,7 @@ import 'package:shopping/common/widgets/custom_shapes/containers/rounded_contain
 import 'package:shopping/common/widgets/loaders/loaders.dart';
 import 'package:shopping/common/widgets/products/cart/coupon_widget.dart';
 import 'package:shopping/common/widgets/products/pricing_calculator.dart';
+import 'package:shopping/common/widgets/texts/product_price_text.dart';
 import 'package:shopping/features/shop/controllers/product/cart_controller.dart';
 import 'package:shopping/features/shop/controllers/product/order_controller.dart';
 import 'package:shopping/features/shop/screens/cart/widget/cart_items.dart';
@@ -40,6 +41,7 @@ class CheckOutScreen extends StatelessWidget {
               const TCartItems(
                 showAddRemoveButton: false,
               ),
+               
               const SizedBox(
                 height: TSizes.spaceBtwSections,
               ),
@@ -91,7 +93,14 @@ class CheckOutScreen extends StatelessWidget {
                 : () => TLoaders.warningSnackBar(
                     title: 'Empty Cart',
                     message: ' To proceed Add Items in the cart.'),
-            child: Text('Checkout $totalAmount /=')),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              const Text('Checkout '),
+              TProductPriceText(price: totalAmount)
+            ],
+            ),
+            ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping/common/widgets/appbar/appbar.dart';
 import 'package:shopping/common/widgets/loaders/animation_loader.dart';
+import 'package:shopping/common/widgets/texts/product_price_text.dart';
 import 'package:shopping/features/shop/controllers/product/cart_controller.dart';
 import 'package:shopping/features/shop/screens/cart/widget/cart_items.dart';
 import 'package:shopping/features/shop/screens/checkout/checkout.dart';
@@ -52,8 +53,15 @@ class CartScreen extends StatelessWidget {
               padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: ElevatedButton(
                   onPressed: () => Get.to(() => const CheckOutScreen()),
-                  child: Obx(() =>
-                      Text('Checkout ${controller.totalCartPrice.value}\/\='))),
+                  child: Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Checkout '),
+                        TProductPriceText(price: controller.totalCartPrice.value,)
+                      ],
+                    ),
+                      ),),
             ),
     );
   }

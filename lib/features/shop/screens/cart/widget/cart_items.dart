@@ -53,8 +53,8 @@ class TCartItems extends StatelessWidget {
                         ],
                       ),
                       TProductPriceText(
-                          price:
-                              (item.price * item.quantity).toStringAsFixed(1)),
+                         price: item.price * item.quantity,
+                         ),
                     ],
                   ),
               ],
